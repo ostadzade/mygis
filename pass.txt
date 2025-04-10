@@ -1,0 +1,34 @@
+ssh-keygen -t ed25519 -C "m.nhi.co@gmail.com"
+
+The key fingerprint is:
+SHA256:VRY9YxkQbzdSLrAJrPqOmcYlycT096wTOSpqRzcm0iE m.nhi.co@gmail.com
+The key's randomart image is:
++--[ED25519 256]--+
+|        .. .*=.+ |
+|     .   ..o+.O  |
+|    o . . .o +o=.|
+|   E + o o   .o..|
+|    = + S +      |
+|   . O = + o     |
+|    + B o +      |
+|   . =+o o       |
+|  ..++o.  .      |
++----[SHA256]-----+
+
+d:/myapp/mygis/
+├── .github/
+│   ├── workflows/          # اتوماسیون
+│   ├── ISSUE_TEMPLATE/     # قالب‌های issue
+│   └── PULL_REQUEST_TEMPLATE.md
+├── docs/                   # مستندات
+├── scripts/                # اسکریپت‌های کمکی
+├── mygis/                  # تنظیمات اصلی
+├── apps/                   # اپلیکیشن‌های پروژه
+│   ├── users/
+│   └── gis_app/
+├── tests/                  # تست‌های سراسری
+├── requirements/           # نیازمندی‌ها
+│   ├── base.txt
+│   ├── dev.txt
+│   └── prod.txt
+└── .env.sample             # نمونه فایل محیطی
