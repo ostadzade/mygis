@@ -1,0 +1,10 @@
+$primary-color: #3498db;
+
+#map-container {
+    border: 2px solid $primary-color;
+    border-radius: 8px;
+    
+    #map {
+        width: 100%;
+    }
+}

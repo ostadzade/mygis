@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'crispy_forms',
     'crispy_bootstrap5',
+    'compressor',
 ]
 
 MIDDLEWARE = [
@@ -53,6 +54,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.static',
             ],
         },
     },
@@ -67,12 +69,12 @@ DATABASES = {
         'NAME': os.getenv('MONGO_DB_NAME'),
         'ENFORCE_SCHEMA': False,
         'CLIENT': {
-            'host': os.getenv('MONGO_HOST'),
+            'host': os.getenv('MONGO_HOST', 'localhost'),
             'port': int(os.getenv('MONGO_PORT', 27017)),
             'username': os.getenv('MONGO_USERNAME'),
             'password': os.getenv('MONGO_PASSWORD'),
             'authSource': 'admin',
-            'authMechanism': 'SCRAM-SHA-1',
+            'authMechanism': 'SCRAM-SHA-256'
         }
     }
 }
@@ -103,6 +105,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Media files
 MEDIA_URL = '/media/'
@@ -119,3 +122,28 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 LOGIN_REDIRECT_URL = 'map_view'
 LOGIN_URL = 'login'
 LOGOUT_REDIRECT_URL = 'home'
+
+# Default primary key field type
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Django Compressor settings
+COMPRESS_PRECOMPILERS = (
+    ('text/x-scss', 'django_libsass.SassCompiler'),
+)
+COMPRESS_ROOT = STATIC_ROOT
+COMPRESS_ENABLED = not DEBUG
+COMPRESS_OFFLINE = not DEBUG
+
+# Libsass settings
+LIBSASS_OUTPUT_STYLE = 'compressed' if not DEBUG else 'nested'
+LIBSASS_SOURCE_COMMENTS = DEBUG
+
+# Leaflet settings (custom)
+LEAFLET_CONFIG = {
+    'DEFAULT_CENTER': (35.6892, 51.3890),
+    'DEFAULT_ZOOM': 13,
+    'MIN_ZOOM': 3,
+    'MAX_ZOOM': 18,
+    'SCALE': 'both',
+    'ATTRIBUTION_PREFIX': 'GIS Application',
+}

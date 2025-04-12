@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}MyGIS{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <nav>...</nav>
+    {% block content %}{% endblock %}
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
