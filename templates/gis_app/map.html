@@ -2,28 +2,21 @@
 {% load static %}
 
 {% block head %}
-<!-- Leaflet CSS -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
-  crossorigin=""/>
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+      crossorigin=""/>
 
 <style>
-    html, body {
+    html, body, #map-container {
         height: 100%;
+        width: 100%;
         margin: 0;
         padding: 0;
         overflow: hidden;
     }
-    #map-container {
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-    }
     #map {
-        height: 100%;
-        width: 100%;
+        height: 100vh !important;
+        width: 100vw !important;
     }
 </style>
 {% endblock %}
@@ -33,52 +26,49 @@
     <div id="map"></div>
 </div>
 
-<!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
-  integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
-  crossorigin=""></script>
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""></script>
 
 <script>
-    // تنظیم مسیر آیکون‌ها
-    delete L.Icon.Default.prototype._getIconUrl;
-    L.Icon.Default.mergeOptions({
-        iconRetinaUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png',
+    // تنظیمات آیکون
+    const DefaultIcon = L.icon({
         iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
-        shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png'
+        shadowUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
     });
+    L.Marker.prototype.options.icon = DefaultIcon;
 
-    // ایجاد نقشه با تمام اصلاحات ضروری
-    document.addEventListener('DOMContentLoaded', function() {
+    // ایجاد نقشه
+    function initMap() {
         const map = L.map('map', {
-            preferCanvas: true,  // کاهش مشکل تکه‌تکه شدن
-            zoomControl: true    // فعال کردن کنترل zoom
+            preferCanvas: true,
+            zoomControl: true
         }).setView([35.6892, 51.3890], 13);
-        
-        const baseLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-            noWrap: true,       // جلوگیری از تکثیر نقشه
-            updateWhenIdle: true // بهینه‌سازی رندر
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            noWrap: true,
+            updateWhenIdle: true
         }).addTo(map);
 
-        // اضافه کردن نشانگر
-        const marker = L.marker([35.6892, 51.3890], {
-            title: 'تهران',
-            alt: 'نشانگر تهران',
-            riseOnHover: true
-        }).addTo(map)
-          .bindPopup('تهران، ایران')
-          .openPopup();
+        L.marker([35.6892, 51.3890]).addTo(map)
+            .bindPopup('تهران، ایران')
+            .openPopup();
 
-        // رفع نهایی مشکل تکه‌تکه شدن
+        // رفع قطعی مشکل تکه‌تکه شدن
         setTimeout(() => {
             map.invalidateSize({animate: true});
-            map.setView([35.6892, 51.3890], 13, {animate: true});
-        }, 200);
+            map.setView([35.6892, 51.3890], 13);
+        }, 300);
+    }
 
-        // رفع مشکل هنگام تغییر سایز پنجره
-        window.addEventListener('resize', function() {
-            map.invalidateSize();
-        });
+    window.onload = initMap;
+    window.addEventListener('resize', () => {
+        const map = L.Map.prototype._map;
+        if(map) map.invalidateSize();
     });
 </script>
 {% endblock %}
