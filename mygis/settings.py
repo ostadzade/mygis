@@ -63,14 +63,18 @@ TEMPLATES = [
 WSGI_APPLICATION = 'mygis.wsgi.application'
 
 # Database
+# بهتر است اینگونه باشد
+from dotenv import load_dotenv
+load_dotenv()  # متغیرهای محیطی را از فایل .env بارگذاری می‌کند
+import os
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'mydjangodb',
-        'USER': 'postgres',
-        'PASSWORD': 'admin',  # همان رمزی که هنگام اتصال وارد کردید
-        'HOST': 'localhost',
-        'PORT': '5432',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
     }
 }
 # Password validation

@@ -1,11 +1,16 @@
 cd D:\myapp\mygis
-cd D:\myapp\mygis
-git init
+bash
+Copy
 git add .
-git commit -m "first commit"
-git branch -M main
-git remote add origin https://github.com/ostadzade/mygis.git
+git commit -m "Merge remote changes"
+3. حالا push را انجام دهید:
+bash
+Copy
 git push -u origin main
+اگر می‌خواهید تاریخچه محلی را جایگزین کنید (موقتاً):
+bash
+Copy
+git push -f origin main
 
 
 "C:\Program Files\PostgreSQL\17\bin\psql" -U postgres -c "ALTER USER postgres WITH PASSWORD 'admin';"

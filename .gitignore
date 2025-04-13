@@ -1,7 +1,38 @@
-".env" 
-"*.pyc" 
-"__pycache__/" 
-"*.sqlite3" 
-"*.log" 
-"staticfiles/" 
-"media/" 
+# فایل‌های پایتون
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+
+# محیط مجازی
+mygis_env/
+venv/
+.env/
+
+# پایگاه داده
+*.sqlite3
+*.db
+
+# تنظیمات محیطی
+.env
+.env.local
+
+# IDE ها
+.idea/
+.vscode/
+*.swp
+
+# فایل‌های سیستمی
+.DS_Store
+Thumbs.db
+
+# فایل‌های تولیدی Django
+/media/
+/staticfiles/
+
+# لاگ‌ها
+*.log
+
+# فایل‌های مهاجرت (در صورت نیاز)
+*/migrations/*.py
+!*/migrations/__init__.py
