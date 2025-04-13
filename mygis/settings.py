@@ -65,20 +65,14 @@ WSGI_APPLICATION = 'mygis.wsgi.application'
 # Database
 DATABASES = {
     'default': {
-        'ENGINE': 'djongo',
-        'NAME': os.getenv('MONGO_DB_NAME'),
-        'ENFORCE_SCHEMA': False,
-        'CLIENT': {
-            'host': os.getenv('MONGO_HOST', 'localhost'),
-            'port': int(os.getenv('MONGO_PORT', 27017)),
-            'username': os.getenv('MONGO_USERNAME'),
-            'password': os.getenv('MONGO_PASSWORD'),
-            'authSource': 'admin',
-            'authMechanism': 'SCRAM-SHA-256'
-        }
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'mydjangodb',
+        'USER': 'postgres',
+        'PASSWORD': 'admin',  # همان رمزی که هنگام اتصال وارد کردید
+        'HOST': 'localhost',
+        'PORT': '5432',
     }
 }
-
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -147,3 +141,6 @@ LEAFLET_CONFIG = {
     'SCALE': 'both',
     'ATTRIBUTION_PREFIX': 'GIS Application',
 }
+# تنظیمات crispy forms
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"

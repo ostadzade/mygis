@@ -1,16 +1,16 @@
 from django.db import models
-from djongo import models as djongo_models
+from django.contrib.postgres.fields import ArrayField
 from users.models import User
 import uuid
 
-class Shapefile(djongo_models.Model):
-    _id = djongo_models.ObjectIdField()
-    user = djongo_models.ForeignKey(User, on_delete=djongo_models.CASCADE)
-    name = djongo_models.CharField(max_length=100)
-    description = djongo_models.TextField(blank=True)
-    upload_date = djongo_models.DateTimeField(auto_now_add=True)
-    file_path = djongo_models.CharField(max_length=255)
-    is_active = djongo_models.BooleanField(default=True)
+class Shapefile(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    description = models.TextField(blank=True)
+    upload_date = models.DateTimeField(auto_now_add=True)
+    file_path = models.CharField(max_length=255)
+    is_active = models.BooleanField(default=True)
     
     class Meta:
         ordering = ['-upload_date']
@@ -20,13 +20,13 @@ class Shapefile(djongo_models.Model):
     def __str__(self):
         return self.name
 
-class Feature(djongo_models.Model):
-    _id = djongo_models.ObjectIdField()
-    shapefile = djongo_models.ForeignKey(Shapefile, on_delete=djongo_models.CASCADE)
-    feature_id = djongo_models.CharField(max_length=50, default=uuid.uuid4)
-    geometry_type = djongo_models.CharField(max_length=50)
-    coordinates = djongo_models.JSONField()
-    properties = djongo_models.JSONField()
+class Feature(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    shapefile = models.ForeignKey(Shapefile, on_delete=models.CASCADE)
+    feature_id = models.CharField(max_length=50, default=uuid.uuid4)
+    geometry_type = models.CharField(max_length=50)
+    coordinates = models.JSONField()
+    properties = models.JSONField()
     
     class Meta:
         verbose_name = 'Feature'
@@ -35,13 +35,17 @@ class Feature(djongo_models.Model):
     def __str__(self):
         return f"{self.shapefile.name} - {self.feature_id}"
 
-class UserMapSettings(djongo_models.Model):
-    _id = djongo_models.ObjectIdField()
-    user = djongo_models.OneToOneField(User, on_delete=djongo_models.CASCADE)
-    default_latitude = djongo_models.FloatField(default=35.6892)
-    default_longitude = djongo_models.FloatField(default=51.3890)
-    default_zoom = djongo_models.IntegerField(default=10)
-    last_viewed_layers = djongo_models.ArrayReferenceField(to=Shapefile, blank=True)
+class UserMapSettings(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    default_latitude = models.FloatField(default=35.6892)
+    default_longitude = models.FloatField(default=51.3890)
+    default_zoom = models.IntegerField(default=10)
+    last_viewed_layers = ArrayField(
+        models.UUIDField(),
+        blank=True,
+        default=list
+    )
     
     def __str__(self):
         return f"Map settings for {self.user.username}"
